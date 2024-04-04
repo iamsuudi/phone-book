@@ -8,7 +8,12 @@ export default function HomePage() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(input);
-        setContacts(contacts.concat(input));
+        if (contacts.includes(input)) {
+            alert(`${input} is already added to phonebook`);
+        }
+        else {
+            setContacts(contacts.concat(input));
+        }
     }
 
     return (
