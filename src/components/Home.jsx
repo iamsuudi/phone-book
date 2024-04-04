@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from 'axios';
 
 export default function HomePage({ query }) {
-    const [contacts, setContacts] = useState([
-        { name: "Arto Hellas", number: "040-123456", id: 1 },
-        { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-        { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-        { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-    ]);
+
+    const [contacts, setContacts] = useState([]);
     const [name, setName] = useState("");
     const [number, setNumber] = useState("");
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/persons').then(response => {
+            console.log('promise fulfilled');
+            setContacts(response.data);
+        });
+    }, [])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -21,7 +25,6 @@ export default function HomePage({ query }) {
             setNumber("");
         }
     };
-    console.log(query);
 
     return (
         <div className="p-10 flex flex-col">
