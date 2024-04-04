@@ -2,7 +2,7 @@ import Footer from "./components/Footer";
 import HomePage from "./components/Home";
 import Nav from "./components/Nav";
 import Hoc from "./hoc/Hoc";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function App() {
 
