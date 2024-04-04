@@ -1,4 +1,5 @@
 import Footer from "./components/Footer";
+import HomePage from "./components/Home";
 import Nav from "./components/Nav";
 import Hoc from "./hoc/Hoc";
 
@@ -9,6 +10,9 @@ function App() {
         <>
             <Hoc>
                 <Nav />
+            </Hoc>
+            <Hoc>
+              <HomePage />
             </Hoc>
             <Hoc>
                 <Footer />
