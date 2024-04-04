@@ -2,17 +2,19 @@ import Footer from "./components/Footer";
 import HomePage from "./components/Home";
 import Nav from "./components/Nav";
 import Hoc from "./hoc/Hoc";
+import { useEffect, useState } from "react";
 
 function App() {
-    // const [count, setCount] = useState(0)
+
+    const [query, setQuery] = useState('');
 
     return (
         <>
             <Hoc>
-                <Nav />
+                <Nav setQuery={setQuery}/>
             </Hoc>
             <Hoc>
-              <HomePage />
+              <HomePage  query={query}/>
             </Hoc>
             <Hoc>
                 <Footer />

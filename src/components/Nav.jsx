@@ -1,4 +1,6 @@
-export default function Nav() {
+
+export default function Nav({setQuery}) {
+
     return (
         <div className="navbar bg-base-100">
             <div className="flex-1">
@@ -9,6 +11,7 @@ export default function Nav() {
                     <input
                         type="text"
                         placeholder="Search"
+                        onChange={(e) => {setQuery(e.target.value)}}
                         className="input input-bordered w-24 md:w-auto"
                     />
                 </div>
