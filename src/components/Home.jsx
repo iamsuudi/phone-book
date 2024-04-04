@@ -3,16 +3,19 @@ import { useState } from "react";
 export default function HomePage() {
 
     const [contacts, setContacts] = useState([]);
-    const [input, setInput] = useState('');
+    const [name, setName] = useState('');
+    const [number, setNumber] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(input);
-        if (contacts.includes(input)) {
-            alert(`${input} is already added to phonebook`);
+        console.log(name);
+        if (contacts.find(contact => contact.name === name)) {
+            alert(`${name} is already added to phonebook`);
         }
         else {
-            setContacts(contacts.concat(input));
+            setContacts(contacts.concat({name, number}));
+            setName('');
+            setNumber('');
         }
     }
 
@@ -21,7 +24,11 @@ export default function HomePage() {
             <form method="post" onSubmit={handleSubmit}>
                 <p>
                     <label htmlFor="name">Name: </label>
-                    <input type="text" value={input} onChange={(e) => {setInput(e.target.value)}}/>
+                    <input id="name" type="text" value={name} onChange={(e) => {setName(e.target.value)}}/>
+                </p>
+                <p>
+                    <label htmlFor="number">Number: </label>
+                    <input id="number" type="number" value={number} onChange={(e) => {setNumber(e.target.value)}}/>
                 </p>
                 <button type="submit" className="btn btn-primary" >Add</button>
             </form>
@@ -29,7 +36,7 @@ export default function HomePage() {
                 {
                     contacts.map((contact, index) => {
                         return (
-                            <p key={index}>{contact}</p>
+                            <p key={index}>{contact.name}: {contact.number}</p>
                         );
                     })
                 }
