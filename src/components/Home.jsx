@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from 'axios';
+import service from '../service/network';
 
 export default function HomePage({ query }) {
 
@@ -8,9 +8,9 @@ export default function HomePage({ query }) {
     const [number, setNumber] = useState("");
 
     useEffect(() => {
-        axios.get('http://localhost:3001/persons').then(response => {
+        service.getAll().then(response => {
             console.log('promise fulfilled');
-            setContacts(response.data);
+            setContacts(response);
         });
     }, [])
 
@@ -23,7 +23,7 @@ export default function HomePage({ query }) {
             setContacts(contacts.concat({ name, number }));
             setName("");
             setNumber("");
-            axios.post('http://localhost:3001/persons', {name, number}).then(response => {
+            service.create({name, number}).then(response => {
                 console.log(response);
             })
         }
