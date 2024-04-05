@@ -23,6 +23,9 @@ export default function HomePage({ query }) {
             setContacts(contacts.concat({ name, number }));
             setName("");
             setNumber("");
+            axios.post('http://localhost:3001/persons', {name, number}).then(response => {
+                console.log(response);
+            })
         }
     };
 
