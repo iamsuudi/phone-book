@@ -28,12 +28,14 @@ export default function HomePage({ query }) {
         }
     };
 
-    const handleDelete = (id) => {
-        console.log(id);
-        service.deleteContact(id).then((response) => {
-            setContacts(contacts.filter((contact) => contact.id != id));
-            console.log(response.name + "deleted from contact");
-        });
+    const handleDelete = (id, name) => {
+        // console.log(id);
+        if (window.confirm(`Delete ${name}?`)) {
+            service.deleteContact(id).then((response) => {
+                setContacts(contacts.filter((contact) => contact.id != id));
+                console.log(response.name + "deleted from contact");
+            });
+        }
     };
 
     return (
@@ -72,12 +74,15 @@ export default function HomePage({ query }) {
                               return (
                                   <li key={contact.id}>
                                       <p>
-                                          {contact.id} | {contact.name}: {contact.number}
+                                          {contact.name}: {contact.number}
                                           <button
                                               type="button"
                                               className="btn btn-error"
                                               onClick={() => {
-                                                  handleDelete(contact.id);
+                                                  handleDelete(
+                                                      contact.id,
+                                                      contact.name
+                                                  );
                                               }}
                                           >
                                               Delete
@@ -92,12 +97,15 @@ export default function HomePage({ query }) {
                                   return (
                                       <li key={contact.id}>
                                           <p>
-                                          {contact.id} | {contact.name}: {contact.number}
+                                              {contact.name}: {contact.number}
                                               <button
                                                   type="button"
                                                   className="btn btn-error"
                                                   onClick={() => {
-                                                      handleDelete(contact.id);
+                                                      handleDelete(
+                                                          contact.id,
+                                                          contact.name
+                                                      );
                                                   }}
                                               >
                                                   Delete
