@@ -15,9 +15,17 @@ export default function HomePage({ query }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(query);
+        // console.log(query);
         if (contacts.find((contact) => contact.name === name)) {
-            alert(`${name} is already added to phonebook`);
+            if (window.confirm(`${name} already exists. Do you want to update the phone number?`)) {
+                const id = contacts.find(contact => contact.name === name).id;
+                service.updateContact(id, { name, number }).then((response) => {
+                    setContacts(contacts.map(contact => contact.id == id ? response : contact));
+                    setName("");
+                    setNumber("");
+                    console.log(`${name}'s number has updated!`);
+                });
+            }
         } else {
             service.create({ name, number }).then((response) => {
                 console.log(response);
