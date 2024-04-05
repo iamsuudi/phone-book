@@ -1,18 +1,17 @@
 import { useState, useEffect } from "react";
-import service from '../service/network';
+import service from "../service/network";
 
 export default function HomePage({ query }) {
-
     const [contacts, setContacts] = useState([]);
     const [name, setName] = useState("");
     const [number, setNumber] = useState("");
 
     useEffect(() => {
-        service.getAll().then(response => {
-            console.log('promise fulfilled');
+        service.getAll().then((response) => {
+            console.log("promise fulfilled");
             setContacts(response);
         });
-    }, [])
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -20,13 +19,21 @@ export default function HomePage({ query }) {
         if (contacts.find((contact) => contact.name === name)) {
             alert(`${name} is already added to phonebook`);
         } else {
-            setContacts(contacts.concat({ name, number }));
-            setName("");
-            setNumber("");
-            service.create({name, number}).then(response => {
+            service.create({ name, number }).then((response) => {
                 console.log(response);
-            })
+                setContacts(contacts.concat(response));
+                setName("");
+                setNumber("");
+            });
         }
+    };
+
+    const handleDelete = (id) => {
+        console.log(id);
+        service.deleteContact(id).then((response) => {
+            setContacts(contacts.filter((contact) => contact.id != id));
+            console.log(response.name + "deleted from contact");
+        });
     };
 
     return (
@@ -59,24 +66,47 @@ export default function HomePage({ query }) {
                 </button>
             </form>
             <div>
-                {query === ""
-                    ? contacts.map((contact) => {
-                          return (
-                              <p key={contact.id}>
-                                  {contact.name}: {contact.number}
-                              </p>
-                          );
-                      })
-                    : contacts.map((contact) => {
-                        // console.log(contact.name.match(RegExp(query, 'i')));
-                          if (contact.name.match(RegExp(query, 'i')))
+                <ul>
+                    {query === ""
+                        ? contacts.map((contact) => {
                               return (
-                                  <p key={contact.id}>
-                                      {contact.name}: {contact.number} 
-                                  </p>
+                                  <li key={contact.id}>
+                                      <p>
+                                          {contact.id} | {contact.name}: {contact.number}
+                                          <button
+                                              type="button"
+                                              className="btn btn-error"
+                                              onClick={() => {
+                                                  handleDelete(contact.id);
+                                              }}
+                                          >
+                                              Delete
+                                          </button>
+                                      </p>
+                                  </li>
                               );
-                        
-                      })}
+                          })
+                        : contacts.map((contact) => {
+                              // console.log(contact.name.match(RegExp(query, 'i')));
+                              if (contact.name.match(RegExp(query, "i")))
+                                  return (
+                                      <li key={contact.id}>
+                                          <p>
+                                          {contact.id} | {contact.name}: {contact.number}
+                                              <button
+                                                  type="button"
+                                                  className="btn btn-error"
+                                                  onClick={() => {
+                                                      handleDelete(contact.id);
+                                                  }}
+                                              >
+                                                  Delete
+                                              </button>
+                                          </p>
+                                      </li>
+                                  );
+                          })}
+                </ul>
             </div>
         </div>
     );
