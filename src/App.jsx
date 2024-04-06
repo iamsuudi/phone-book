@@ -10,15 +10,11 @@ function App() {
 
     return (
         <>
-            <Hoc>
-                <Nav setQuery={setQuery}/>
-            </Hoc>
+            <Nav setQuery={setQuery}/>
             <Hoc>
               <HomePage  query={query}/>
             </Hoc>
-            <Hoc>
-                <Footer />
-            </Hoc>
+            <Footer />
         </>
     );
 }

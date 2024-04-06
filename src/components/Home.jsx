@@ -1,5 +1,40 @@
 import { useState, useEffect } from "react";
 import service from "../service/network";
+import Table from "./Table";
+
+const row = (contact, index, handleDelete) => {
+    return (
+        <tr key={contact.id}>
+            <th>{index + 1}</th>
+            <td>{contact.name}</td>
+            <td>{contact.number}</td>
+            <td>
+                <button
+                    className="btn btn-circle btn-outline btn-error scale-50"
+                    type="button"
+                    onClick={() => {
+                        handleDelete(contact.id, contact.name);
+                    }}
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M6 18L18 6M6 6l12 12"
+                        />
+                    </svg>
+                </button>
+            </td>
+        </tr>
+    );
+};
 
 export default function HomePage({ query }) {
     const [contacts, setContacts] = useState([]);
@@ -17,10 +52,18 @@ export default function HomePage({ query }) {
         e.preventDefault();
         // console.log(query);
         if (contacts.find((contact) => contact.name === name)) {
-            if (window.confirm(`${name} already exists. Do you want to update the phone number?`)) {
-                const id = contacts.find(contact => contact.name === name).id;
+            if (
+                window.confirm(
+                    `${name} already exists. Do you want to update the phone number?`
+                )
+            ) {
+                const id = contacts.find((contact) => contact.name === name).id;
                 service.updateContact(id, { name, number }).then((response) => {
-                    setContacts(contacts.map(contact => contact.id == id ? response : contact));
+                    setContacts(
+                        contacts.map((contact) =>
+                            contact.id == id ? response : contact
+                        )
+                    );
                     setName("");
                     setNumber("");
                     console.log(`${name}'s number has updated!`);
@@ -47,82 +90,61 @@ export default function HomePage({ query }) {
     };
 
     return (
-        <div className="p-10 flex flex-col">
-            <form method="post" onSubmit={handleSubmit}>
-                <p>
-                    <label htmlFor="name">Name: </label>
+        <div className="py-10 flex flex-wrap">
+            <form
+                className="card-body max-w-96"
+                method="post"
+                onSubmit={handleSubmit}
+            >
+                <div className="form-control">
+                    <label className="label font-black">
+                        <span className="label-text">Name</span>
+                    </label>
                     <input
                         id="name"
                         type="text"
                         value={name}
+                        placeholder="full name"
+                        className="input"
                         onChange={(e) => {
                             setName(e.target.value);
                         }}
                     />
-                </p>
-                <p>
-                    <label htmlFor="number">Number: </label>
+                </div>
+                <div className="form-control">
+                    <label className="label font-black">
+                        <span className="label-text">Phone Number</span>
+                    </label>
                     <input
                         id="number"
-                        type="number"
+                        type="text"
                         value={number}
+                        inputMode="numeric"
+                        placeholder="+1 789 786 7654"
+                        className="input"
                         onChange={(e) => {
                             setNumber(e.target.value);
                         }}
                     />
-                </p>
-                <button type="submit" className="btn btn-primary">
-                    Add
-                </button>
+                </div>
+                <div className="form-control mt-6">
+                    <button type="submit" className="btn btn-success">
+                        Add
+                    </button>
+                </div>
             </form>
-            <div>
-                <ul>
+            <div className="flex-grow p-4">
+                <Table>
                     {query === ""
-                        ? contacts.map((contact) => {
-                              return (
-                                  <li key={contact.id}>
-                                      <p>
-                                          {contact.name}: {contact.number}
-                                          <button
-                                              type="button"
-                                              className="btn btn-error"
-                                              onClick={() => {
-                                                  handleDelete(
-                                                      contact.id,
-                                                      contact.name
-                                                  );
-                                              }}
-                                          >
-                                              Delete
-                                          </button>
-                                      </p>
-                                  </li>
-                              );
+                        ? contacts.map((contact, index) => {
+                              return row(contact, index, handleDelete);
                           })
-                        : contacts.map((contact) => {
+                        : contacts.map((contact, index) => {
                               // console.log(contact.name.match(RegExp(query, 'i')));
                               if (contact.name.match(RegExp(query, "i")))
-                                  return (
-                                      <li key={contact.id}>
-                                          <p>
-                                              {contact.name}: {contact.number}
-                                              <button
-                                                  type="button"
-                                                  className="btn btn-error"
-                                                  onClick={() => {
-                                                      handleDelete(
-                                                          contact.id,
-                                                          contact.name
-                                                      );
-                                                  }}
-                                              >
-                                                  Delete
-                                              </button>
-                                          </p>
-                                      </li>
-                                  );
+                                  return row(contact, index, handleDelete);
                           })}
-                </ul>
+                </Table>
             </div>
         </div>
     );
