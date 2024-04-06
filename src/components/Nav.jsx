@@ -3,7 +3,7 @@ export default function Nav({ setQuery }) {
         <section className="bg-base-300 w-full">
             <div className="navbar py-10 max-w-screen-xl bg-base-300 mx-auto">
                 <div className="flex-1">
-                    <a className="btn btn-ghost text-xl">Phone Book</a>
+                    <a className="btn btn-ghost text-xl">PhoneBook</a>
                 </div>
                 <div className="flex-none gap-5">
                     <div className="form-control">

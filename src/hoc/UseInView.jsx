@@ -7,7 +7,7 @@ export default function View({ children }) {
     const isInView = useInView(ref, { once: true });
 
     return (
-        <section ref={ref}>
+        <section ref={ref} className="w-full">
             <span
                 style={{
                     transform: isInView ? "none" : "translateX(-200px)",
