@@ -7,12 +7,14 @@ import View from "../hoc/UseInView";
 
 const row = (contact, index, handleDelete) => {
     return (
-        <View>
-            <tr key={contact.id}>
+        <tr key={contact.id}>
             <th>{index + 1}</th>
-            <td>{contact.name}</td>
-            <td>{contact.number}</td>
+            <td className="h-full">
+                <View>{contact.name}</View>
+            </td>
+            <td><View>{contact.number}</View></td>
             <td>
+                <View>
                 <button
                     className="btn btn-circle btn-outline btn-error scale-50"
                     type="button"
@@ -35,9 +37,9 @@ const row = (contact, index, handleDelete) => {
                         />
                     </svg>
                 </button>
+                </View>
             </td>
         </tr>
-        </View>
     );
 };
 
@@ -53,8 +55,7 @@ export default function HomePage({ query }) {
             setContacts(response);
         });
         setTimeout(() => {
-            if (feedback)
-                setFeedback(null);
+            if (feedback) setFeedback(null);
         }, 3000);
     }, [feedback]);
 
@@ -76,16 +77,18 @@ export default function HomePage({ query }) {
                     );
                     setName("");
                     setNumber("");
-                    setFeedback({type: 'success', message: `${name}'s number is updated.`});
+                    setFeedback({
+                        type: "success",
+                        message: `${name}'s number is updated.`,
+                    });
                 });
             }
         } else {
             service.create({ name, number }).then((response) => {
-                
                 setContacts(contacts.concat(response));
                 setName("");
                 setNumber("");
-                setFeedback({type: 'success', message: `${name} is added.`});
+                setFeedback({ type: "success", message: `${name} is added.` });
             });
         }
     };
@@ -93,20 +96,27 @@ export default function HomePage({ query }) {
     const handleDelete = (id, name) => {
         // console.log(id);
         if (window.confirm(`Delete ${name}?`)) {
-            service.deleteContact(id).then((response) => {
-                setContacts(contacts.filter((contact) => contact.id != id));
-                console.log(response.name + "deleted from contact");
-            }).catch(error => {
-                setFeedback({type: 'fail', message: error});
-            });
+            service
+                .deleteContact(id)
+                .then((response) => {
+                    setContacts(contacts.filter((contact) => contact.id != id));
+                    console.log(response.name + "deleted from contact");
+                })
+                .catch((error) => {
+                    setFeedback({ type: "fail", message: error });
+                });
         }
     };
 
     return (
         <>
             <div className="h-32 max-w-screen-xl flex items-center p-5">
-                {feedback && feedback.type === 'success' && <Success>{feedback.message}</Success>}
-                {feedback && feedback.type === 'fail' && <Error>{feedback.message}</Error>}
+                {feedback && feedback.type === "success" && (
+                    <Success>{feedback.message}</Success>
+                )}
+                {feedback && feedback.type === "fail" && (
+                    <Error>{feedback.message}</Error>
+                )}
             </div>
             <div className="p-10 flex flex-wrap">
                 <form
@@ -151,7 +161,7 @@ export default function HomePage({ query }) {
                         </button>
                     </div>
                 </form>
-                <div className="flex-grow p-4 max-w-[calc(100%-80px)]">
+                <div className="flex-grow p-4 max-w-[calc(100vw-80px)]">
                     <Table>
                         {query === ""
                             ? contacts.map((contact, index) => {
