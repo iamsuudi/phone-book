@@ -11,9 +11,7 @@ function App() {
     return (
         <>
             <Nav setQuery={setQuery}/>
-            <Hoc>
-              <HomePage  query={query}/>
-            </Hoc>
+            <HomePage  query={query}/>
             <Footer />
         </>
     );

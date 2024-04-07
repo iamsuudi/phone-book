@@ -3,7 +3,7 @@ import View from "../hoc/UseInView";
 export default function Error({ children }) {
     return (
         <View>
-            <div role="alert" className="alert alert-error">
+            <div role="alert" className="alert alert-error max-w-screen-xl mx-auto">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="stroke-current shrink-0 h-6 w-6"
