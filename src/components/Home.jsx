@@ -12,31 +12,33 @@ const row = (contact, index, handleDelete) => {
             <td className="h-full">
                 <View>{contact.name}</View>
             </td>
-            <td><View>{contact.number}</View></td>
+            <td>
+                <View>{contact.number}</View>
+            </td>
             <td>
                 <View>
-                <button
-                    className="btn btn-circle btn-outline btn-error scale-50"
-                    type="button"
-                    onClick={() => {
-                        handleDelete(contact.id, contact.name);
-                    }}
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                    <button
+                        className="btn btn-circle btn-outline btn-error scale-50"
+                        type="button"
+                        onClick={() => {
+                            handleDelete(contact.id, contact.name);
+                        }}
                     >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M6 18L18 6M6 6l12 12"
-                        />
-                    </svg>
-                </button>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M6 18L18 6M6 6l12 12"
+                            />
+                        </svg>
+                    </button>
                 </View>
             </td>
         </tr>
@@ -110,7 +112,7 @@ export default function HomePage({ query }) {
 
     return (
         <>
-            <div className="h-32 max-w-screen-xl flex items-center p-5">
+            <div className="fixed top-20 h-32 w-[100vw] p-5 z-20">
                 {feedback && feedback.type === "success" && (
                     <Success>{feedback.message}</Success>
                 )}
@@ -118,63 +120,71 @@ export default function HomePage({ query }) {
                     <Error>{feedback.message}</Error>
                 )}
             </div>
-            <div className="p-10 flex flex-wrap">
-                <form
-                    className="card-body max-w-96 p-0"
-                    method="post"
-                    onSubmit={handleSubmit}
-                >
-                    <div className="form-control">
-                        <label className="label font-black">
-                            <span className="label-text">Name</span>
-                        </label>
-                        <input
-                            id="name"
-                            type="text"
-                            value={name}
-                            placeholder="full name"
-                            className="input"
-                            onChange={(e) => {
-                                setName(e.target.value);
-                            }}
-                        />
-                    </div>
-                    <div className="form-control">
-                        <label className="label font-black">
-                            <span className="label-text">Phone Number</span>
-                        </label>
-                        <input
-                            id="number"
-                            type="text"
-                            value={number}
-                            inputMode="numeric"
-                            placeholder="+1 789 786 7654"
-                            className="input"
-                            onChange={(e) => {
-                                setNumber(e.target.value);
-                            }}
-                        />
-                    </div>
-                    <div className="form-control mt-6">
-                        <button type="submit" className="btn btn-info">
-                            Add
-                        </button>
-                    </div>
-                </form>
-                <div className="flex-grow p-4 max-w-[calc(100vw-80px)]">
-                    <Table>
-                        {query === ""
-                            ? contacts.map((contact, index) => {
-                                  return row(contact, index, handleDelete);
-                              })
-                            : contacts.map((contact, index) => {
-                                  // console.log(contact.name.match(RegExp(query, 'i')));
-                                  if (contact.name.match(RegExp(query, "i")))
+            <section className="relative mt-20">
+                <div className="p-5 flex flex-wrap gap-5 justify-between">
+                    <form
+                        className="card-body w-80 h-fit p-5 shadow-2xl bg-base-200 lg:sticky lg:top-36"
+                        method="post"
+                        onSubmit={handleSubmit}
+                    >
+                        <div className="form-control">
+                            <label className="label font-black">
+                                <span className="label-text">Name</span>
+                            </label>
+                            <input
+                                id="name"
+                                type="text"
+                                value={name}
+                                placeholder="full name"
+                                className="input"
+                                onChange={(e) => {
+                                    setName(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <div className="form-control">
+                            <label className="label font-black">
+                                <span className="label-text">Phone Number</span>
+                            </label>
+                            <input
+                                id="number"
+                                type="text"
+                                value={number}
+                                inputMode="numeric"
+                                placeholder="+1 789 786 7654"
+                                className="input"
+                                onChange={(e) => {
+                                    setNumber(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <div className="form-control mt-6">
+                            <button type="submit" className="btn btn-info">
+                                Add
+                            </button>
+                        </div>
+                    </form>
+                    <div className="flex-grow p-4 max-w-[calc(100vw-30px)] shadow-2xl">
+                        <Table>
+                            {query === ""
+                                ? contacts.map((contact, index) => {
                                       return row(contact, index, handleDelete);
-                              })}
-                    </Table>
+                                  })
+                                : contacts.map((contact, index) => {
+                                      // console.log(contact.name.match(RegExp(query, 'i')));
+                                      if (
+                                          contact.name.match(RegExp(query, "i"))
+                                      )
+                                          return row(
+                                              contact,
+                                              index,
+                                              handleDelete
+                                          );
+                                  })}
+                        </Table>
+                    </div>
                 </div>
-            </div>
+            </section>
         </>
     );
 }
