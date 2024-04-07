@@ -1,7 +1,7 @@
 export default function Nav({ setQuery }) {
     return (
-        <section className="bg-base-300 w-full">
-            <div className="navbar py-10 max-w-screen-xl bg-base-300 mx-auto">
+        <section className="bg-base-300 w-full fixed z-10">
+            <div className="navbar py-5 max-w-screen-xl bg-base-300 mx-auto">
                 <div className="flex-1">
                     <a className="btn btn-ghost text-xl">PhoneBook</a>
                 </div>
