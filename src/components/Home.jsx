@@ -54,6 +54,7 @@ export default function HomePage({ query }) {
     useEffect(() => {
         service.getAll().then((response) => {
             console.log("promise fulfilled");
+            console.log(response);
             setContacts(response);
         });
         setTimeout(() => {
@@ -85,6 +86,11 @@ export default function HomePage({ query }) {
                     });
                 });
             }
+        } else if (name === "" || number === "") {
+            setFeedback({
+                type: "fail",
+                message: "name and phone number can't be empty",
+            });
         } else {
             service.create({ name, number }).then((response) => {
                 setContacts(contacts.concat(response));
@@ -98,11 +104,15 @@ export default function HomePage({ query }) {
     const handleDelete = (id, name) => {
         // console.log(id);
         if (window.confirm(`Delete ${name}?`)) {
+            console.log("id: ", id, "is going to be deleted");
             service
                 .deleteContact(id)
                 .then((response) => {
                     setContacts(contacts.filter((contact) => contact.id != id));
-                    console.log(response.name + "deleted from contact");
+                    setFeedback({
+                        type: "success",
+                        message: `${response.name} is deleted.`,
+                    });
                 })
                 .catch((error) => {
                     setFeedback({ type: "fail", message: error });
@@ -112,7 +122,11 @@ export default function HomePage({ query }) {
 
     return (
         <>
-            <div className="fixed top-20 h-32 w-[100vw] p-5 z-20">
+            <div
+                className={`fixed ${
+                    feedback ? "block" : "hidden"
+                } top-20 h-32 w-[100vw] p-5 z-20`}
+            >
                 {feedback && feedback.type === "success" && (
                     <Success>{feedback.message}</Success>
                 )}
