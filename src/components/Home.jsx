@@ -111,7 +111,7 @@ export default function HomePage({ query }) {
                     setContacts(contacts.filter((contact) => contact.id != id));
                     setFeedback({
                         type: "success",
-                        message: `${response.name} is deleted.`,
+                        message: `${name} is deleted.`,
                     });
                 })
                 .catch((error) => {
