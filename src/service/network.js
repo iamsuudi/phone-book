@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'https://phone-book-backend-r7eb.onrender.com/persons';
+const baseURL = '/persons';
 
 const getAll = () => {
     return axios.get(baseURL).then(response => response.data).catch(error => {
