@@ -9,9 +9,7 @@ const getAll = () => {
 }
 
 const create = (newData) => {
-    return axios.post(baseURL, newData).then(response => response.data).catch(error => {
-        console.error(error);
-    });
+    return axios.post(baseURL, newData).then(response => response.data);
 }
 
 const deleteContact = (id) => {

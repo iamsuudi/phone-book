@@ -92,12 +92,22 @@ export default function HomePage({ query }) {
                 message: "name and phone number can't be empty",
             });
         } else {
-            service.create({ name, number }).then((response) => {
-                setContacts(contacts.concat(response));
-                setName("");
-                setNumber("");
-                setFeedback({ type: "success", message: `${name} is added.` });
-            });
+            service
+                .create({ name, number })
+                .then((response) => {
+                    console.log('successfully added', response);
+                    setContacts(contacts.concat(response));
+                    setName("");
+                    setNumber("");
+                    setFeedback({
+                        type: "success",
+                        message: `${name} is added.`,
+                    });
+                })
+                .catch((error) => {
+                    console.log('catching from home', error);
+                    setFeedback({ type: "fail", message: error.response.data.error });
+                });
         }
     };
 
