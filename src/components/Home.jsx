@@ -72,19 +72,30 @@ export default function HomePage({ query }) {
                 )
             ) {
                 const id = contacts.find((contact) => contact.name === name).id;
-                service.updateContact(id, { name, number }).then((response) => {
-                    setContacts(
-                        contacts.map((contact) =>
-                            contact.id == id ? response : contact
-                        )
-                    );
-                    setName("");
-                    setNumber("");
-                    setFeedback({
-                        type: "success",
-                        message: `${name}'s number is updated.`,
+                console.log("udating id: ", id, name);
+                service
+                    .updateContact(id, { name, number })
+                    .then((response) => {
+                        console.log("updated one: ", response);
+                        setContacts(
+                            contacts.map((contact) =>
+                                contact.id == id ? response : contact
+                            )
+                        );
+                        setName("");
+                        setNumber("");
+                        setFeedback({
+                            type: "success",
+                            message: `${name}'s number is updated.`,
+                        });
+                    })
+                    .catch((error) => {
+                        console.log("catching from update home", error);
+                        setFeedback({
+                            type: "fail",
+                            message: error.response.data.error,
+                        });
                     });
-                });
             }
         } else if (name === "" || number === "") {
             setFeedback({
@@ -95,7 +106,7 @@ export default function HomePage({ query }) {
             service
                 .create({ name, number })
                 .then((response) => {
-                    console.log('successfully added', response);
+                    console.log("successfully added", response);
                     setContacts(contacts.concat(response));
                     setName("");
                     setNumber("");
@@ -105,8 +116,11 @@ export default function HomePage({ query }) {
                     });
                 })
                 .catch((error) => {
-                    console.log('catching from home', error);
-                    setFeedback({ type: "fail", message: error.response.data.error });
+                    console.log("catching from create home", error);
+                    setFeedback({
+                        type: "fail",
+                        message: error.response.data.error,
+                    });
                 });
         }
     };
@@ -159,7 +173,7 @@ export default function HomePage({ query }) {
                                 id="name"
                                 type="text"
                                 value={name}
-                                placeholder="full name"
+                                placeholder="Abdulfetah Suudi"
                                 className="input"
                                 onChange={(e) => {
                                     setName(e.target.value);
@@ -175,7 +189,7 @@ export default function HomePage({ query }) {
                                 type="text"
                                 value={number}
                                 inputMode="numeric"
-                                placeholder="+1 789 786 7654"
+                                placeholder="991-75-2985"
                                 className="input"
                                 onChange={(e) => {
                                     setNumber(e.target.value);
