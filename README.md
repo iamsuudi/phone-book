@@ -15,23 +15,5 @@
 
 Users should be able to:
 
-- Register as a user to use the app (-- being developed)
-- Create new contacts
-- Update contacts' phone number
-- Search through contacts
-- Delete contacts
-- Get informative feedbacks on every operations
-
-### Screenshot
-
-<img src="./screenshots/desktop.png">
-
-### Links
-
-- Live Site URL: [Click here](https://phone-book-liart.vercel.app)
-
-### Deployment
-
-- Frontend is hosted from vercel
-- Backend is hosted from Render
-- Database is handled by Mongodb Atlas
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
